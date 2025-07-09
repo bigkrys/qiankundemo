@@ -1,84 +1,87 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import './App.css'
-import { useLayoutEffect, useRef } from 'react';
-import { loadMicroApp } from 'qiankun';
-import type { MicroApp } from 'qiankun';
+import React from 'react';
+import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import { Layout, Menu, theme } from 'antd';
+import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
 import { microApps } from './microApps'
-import { EVENT_MESSAGE_NAME } from '@myqiankun/utils';
-/** 子应用样式 */
-const subStyle = {
-  width: 'calc((100% - 20px * 2) / 3)',
-  height: 400,
-  border: '1px solid red',
-};
-// @ts-expect-error 使用事件总线
-let eventBus = window.mainEventBus;
+const { Header, Content, Footer, Sider } = Layout;
 
-function App() {
-  const microInstanceRef = useRef<MicroApp>(undefined); // 子应用实例
-  useLayoutEffect(() => {
-    if (!eventBus) {
-      // @ts-expect-error 使用事件总线
-      eventBus = window.mainEventBus;
-    }
-    eventBus.$on(EVENT_MESSAGE_NAME.SUB1_SEND_MESSAGE, (data: any) => {
-      console.log('主应用接受子应用1发送的消息', data);
-    })
-      eventBus.$on(EVENT_MESSAGE_NAME.SUB2_SEND_MESSAGE, (data: any) => {
-      console.log('主应用接受子应用2发送的消息', data);
-    })
-  }, []);
-  // 新增发送消息方法
-const sendMessage1 = () => {
-  // eventBus.$emit(EVENT_MESSAGE_NAME.MAIN_SEND_MESSAGE, '主应用向子应用发送消息1');
-  history.pushState(null, '', `?app=dashboard&tab=analytics`);
-}
-const sendMessage2 = () => {
-  eventBus.$emit(EVENT_MESSAGE_NAME.MAIN_SEND_MESSAGE, '主应用向子应用发送消息2');
-}
-const getQueryParams = () => {
-  const searchParams = new URLSearchParams(window.location.search);
-  return Object.fromEntries(searchParams.entries());
-};
-  const handleClick = (appName: string) => {
+const items = [
+  {
+    key: '/subApp1',
+    icon: <UserOutlined />,
+    label: '子应用1',
+  },
+  {
+    key: '/subApp2',
+    icon: <VideoCameraOutlined />,
+    label: '子应用2',
+  },
+  {
+    key: '/main',
+    icon: <UploadOutlined />,
+    label: '主应用内容',
+  },
+];
 
-    microInstanceRef.current?.unmount();
-    console.log(microApps)
-    const microApp = microApps.find((item) => item.name === appName);
-    console.log('microApps', microApp, appName);
+const App: React.FC = () => {
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const { ...rest } = microApp;
-
-    microInstanceRef.current = loadMicroApp({
-      ...rest,
-      props: { 
-        routeType: 'memory' ,
-        baseUrl: window.location.href, // 传递完整URL
-        initialQuery: getQueryParams(),
-        userInfo: {
-          name: '张三',
-          age: 18,
-        }
-       }, // 设置路由类型为 memory
-      
-    });
-  };
   return (
-    <>
-      <div>
-        <h2>主应用</h2>
-        <button onClick={() => handleClick('subApp1')}>加载 app1</button>
-        <button onClick={() => handleClick('subApp2')}>加载 app2</button>
-        <button onClick={() => sendMessage1()}>向app1发送消息</button>
-        <button onClick={() => sendMessage2()}>向app2发送消息</button>
-        <div style={{ display: 'flex', gap: '0 20px', width: '1800px'}}>
-          <div id="subAppContainer1" style={subStyle}></div>
-          <div id="subAppContainer2" style={subStyle}></div>
-        </div>
-      </div>
-    </>
-  )
-}
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider
+        breakpoint="lg"
+        collapsedWidth="0"
+        onBreakpoint={(broken) => {
+          console.log(broken);
+        }}
+        onCollapse={(collapsed, type) => {
+          console.log(collapsed, type);
+        }}
+      >
+        <div className="demo-logo-vertical" />
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={[location.pathname]}
+          items={items}
+          onClick={({ key }) => {
+            console.log('key', key)
+            navigate(key)
+          }}
+        />
+      </Sider>
+      <Layout>
+        <Header style={{ padding: 0, background: colorBgContainer }} />
+        <Content style={{ margin: '24px 16px 0' }}>
+          <div
+            style={{
+              padding: 24,
+              minHeight: 360,
+              background: colorBgContainer,
+              borderRadius: borderRadiusLG,
+            }}
+          >
+            <Routes>
+              <Route path="/subApp1" element={<div id="subAppContainer" style={{ height: '100%' }} />} />
+              <Route path="/subApp2" element={<div id="subAppContainer" style={{ height: '100%' }} />} />
+              <Route path="/main" element={<div>主应用内容</div>} />
+              <Route path="*" element={<div>请选择左侧菜单</div>} />
+            </Routes>
+          </div>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>
+          krys ©{new Date().getFullYear()} Created by krys
+        </Footer>
+      </Layout>
+    </Layout>
+  );
+};
 
 export default App;

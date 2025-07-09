@@ -27,10 +27,7 @@ const qiankun = () => {
     },
     update: () => {},
     unmount: () => {
-      const root = document.getElementById('subAppContainer2');
-      if (root) {
-        createRoot(root).unmount();
-      }
+      
     }
   });
 };

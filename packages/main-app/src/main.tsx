@@ -2,6 +2,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createStore } from 'redux';
+import { BrowserRouter } from 'react-router-dom';
 import './index.css'
 import App from './App.tsx'
 import { registerMicroApps, start } from 'qiankun';
@@ -67,10 +68,12 @@ const globalReducer = (state: any, action: any) => {
 const globalStore = createStore(globalReducer)
 // @ts-expect-error 共享数据
 window.globalStore = globalStore;
-start();
+start({singular: true });
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+   <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </StrictMode>,
 )

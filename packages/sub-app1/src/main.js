@@ -30,10 +30,7 @@ const qiankun = () => {
     },
     update: () => {},
     async unmount(props) {
-      if (appInstance) {
-        appInstance.unmount();
-        appInstance = null;
-      }
+      
     },
   });
 };

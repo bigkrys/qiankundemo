@@ -1,0 +1,17 @@
+{
+  "name": "@myqiankun/utils",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "typescript": "^5.2.0"
+  }
+} 

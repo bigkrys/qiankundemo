@@ -1,0 +1,22 @@
+{
+  "name": "sub-app1",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "qiankun-utils": "^1.2.2",
+    "vue": "^3.5.17",
+    "@myqiankun/utils": "*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.0",
+    "vite": "^7.0.0",
+    "vite-plugin-qiankun": "^1.0.15",
+    "vite-plugin-vue-devtools": "^7.7.7"
+  }
+}

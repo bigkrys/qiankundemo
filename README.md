@@ -17,3 +17,19 @@ lerna run dev --parallel
 
 # 单独启动应用
 cd packages/main-app && npm run dev
+
+
+##容器化部署
+```bash
+tar -czf qiankun-deploy.tar.gz \
+    Dockerfile \
+    docker-compose.yml \
+    nginx.conf \
+    package.json \
+    package-lock.json \
+    lerna.json \
+    packages/main-app \
+    packages/sub-app1 \
+    packages/sub-app2 \
+    shared/utils
+```

@@ -1,13 +1,14 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react-swc'
 
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
     port: 8000,
     host: 'localhost',
-    open: true,
+    cors: true,
+    open: false,
     proxy: {
       '/api': {
         target: 'http://localhost:5000',
@@ -16,4 +17,14 @@ export default defineConfig({
       }
     }
   },
+  build: {
+    rollupOptions: {
+      external: ['@myqiankun/utils'],
+      output: {
+        globals: {
+          '@myqiankun/utils': 'MyQiankunUtils'
+        }
+      }
+    }
+  }
 })

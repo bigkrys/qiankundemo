@@ -2,7 +2,6 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
 import qiankun from 'vite-plugin-qiankun';
 
 const mode = process.env.NODE_ENV || 'development';
@@ -17,7 +16,6 @@ const base = useDevMode
 export default defineConfig({
   plugins: [
     vue(),
-    vueDevTools(),
     qiankun(subAppName, {useDevMode, base, entry: 'src/main.js'}),
   ],
   resolve: {

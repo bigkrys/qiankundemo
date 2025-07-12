@@ -111,7 +111,7 @@ jobs:
               echo "✅ 容器启动成功!"
               echo "容器信息:"
               docker ps | grep qiankun-app
-              echo "访问地址: http://${{ secrets.SSH_HOST }}:8888"
+              echo "访问地址: http://$NGINX_SERVER_NAME"
             else
               echo "❌ 容器启动失败!"
               echo "容器日志:"

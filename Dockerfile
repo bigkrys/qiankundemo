@@ -18,10 +18,14 @@ COPY shared/utils/package*.json ./shared/utils/
 # 安装依赖
 RUN pnpm install
 RUN pnpm add -w typescript
+
 # 复制源代码
 COPY . .
 
-# 构建应用
+# 先构建共享库
+RUN cd shared/utils && pnpm build
+
+# 构建所有应用
 RUN pnpm build
 
 # 运行阶段

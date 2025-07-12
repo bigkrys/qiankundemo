@@ -20,7 +20,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@myqiankun/utils': fileURLToPath(new URL('../../shared/utils/src/index.ts', import.meta.url))
     },
   },
    server: {

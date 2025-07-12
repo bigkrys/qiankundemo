@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import qiankun from 'vite-plugin-qiankun';
+import { fileURLToPath, URL } from 'node:url'
 
 const mode = process.env.NODE_ENV || 'development';
 const useDevMode = mode === 'development';
@@ -15,6 +16,11 @@ export default defineConfig({
     react(),
     qiankun(subAppName, { useDevMode })
   ],
+  resolve: {
+    alias: {
+      '@myqiankun/utils': fileURLToPath(new URL('../../shared/utils/src/index.ts', import.meta.url))
+    }
+  },
   server: {
     port,
     host: 'localhost',

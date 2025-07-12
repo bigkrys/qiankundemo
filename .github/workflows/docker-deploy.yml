@@ -36,8 +36,14 @@ jobs:
           echo "PORT=${{ secrets.PORT }}" >> .env
           echo "NODE_ENV=production" >> .env
 
-      - name: Build project
-        run: pnpm -r run build
+      - name: Build shared utils
+        run: |
+          cd shared/utils
+          pnpm build
+          cd ../..
+
+      - name: Build all applications
+        run: pnpm build:apps
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3

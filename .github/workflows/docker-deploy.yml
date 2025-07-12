@@ -3,10 +3,10 @@ name: Docker Build & Push
 on:
   push:
     branches:
-      - main
+      - dev
   pull_request:
     branches:
-      - main
+      - dev
 
 jobs:
   build-and-push:
@@ -54,4 +54,17 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/qiankun:latest 
+          tags: ${{ secrets.DOCKER_IMAGE_NAME }}
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKER_IMAGE_NAME }}
+            docker stop qiankun || true
+            docker rm qiankun || true
+            docker run -d --name qiankun -p 80:8888 \
+              ${{ secrets.DOCKER_IMAGE_NAME }}

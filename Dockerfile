@@ -43,7 +43,7 @@ COPY --from=builder /app/packages/sub-app1/dist /usr/share/nginx/html/sub-app1
 COPY --from=builder /app/packages/sub-app2/dist /usr/share/nginx/html/sub-app2
 
 # 设置默认环境变量
-ENV PORT=80
+ENV PORT=8888
 ENV NGINX_SERVER_NAME=localhost
 
 # 启动脚本
@@ -52,9 +52,9 @@ RUN chmod +x /docker-entrypoint.sh
 
 # 健康检查
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:${PORT:-80}/ || exit 1
+  CMD curl -f http://localhost:${PORT:-8888}/ || exit 1
 
-EXPOSE 80
+EXPOSE 8888
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"] 

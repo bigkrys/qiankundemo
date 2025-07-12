@@ -7,10 +7,10 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "${PORT:-8888}:${PORT:-8888}"
+      - "${PORT:-8888}:8888"
     volumes:
       - ./ssl:/etc/nginx/ssl
     environment:
-      - PORT=${PORT:-8888}
+      - PORT=8888
       - NGINX_SERVER_NAME=${NGINX_SERVER_NAME:-localhost}
     restart: unless-stopped 

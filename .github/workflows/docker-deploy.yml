@@ -73,7 +73,7 @@ jobs:
             export DOCKER_IMAGE_NAME="${{ secrets.DOCKER_IMAGE_NAME }}"
             export NGINX_SERVER_NAME="${{ secrets.NGINX_SERVER_NAME }}"
             export EXTERNAL_PORT="8888"
-            export INTERNAL_PORT="80"
+            export INTERNAL_PORT="8888"
             
             # 停止并删除旧容器
             echo "停止旧容器..."
@@ -96,9 +96,9 @@ jobs:
             echo "启动新容器..."
             docker run -d \
               --name qiankun-app \
-              -p 8888:80 \
-              -e PORT=80 \
-              -e NGINX_SERVER_NAME=$NGINX_SERVER_NAME \
+              -p 8888:8888 \
+              -e PORT=8888 \
+              -e NGINX_SERVER_NAME="$NGINX_SERVER_NAME" \
               --restart unless-stopped \
               $DOCKER_IMAGE_NAME
             
@@ -111,7 +111,7 @@ jobs:
               echo "✅ 容器启动成功!"
               echo "容器信息:"
               docker ps | grep qiankun-app
-              echo "访问地址: http://$NGINX_SERVER_NAME"
+              echo "访问地址: http://$NGINX_SERVER_NAME:8888"
             else
               echo "❌ 容器启动失败!"
               echo "容器日志:"

@@ -7,7 +7,8 @@ set -e
 CONTAINER_NAME="qiankun-app"
 IMAGE_NAME="${DOCKER_IMAGE_NAME:-qiankun-demo:latest}"
 EXTERNAL_PORT="${EXTERNAL_PORT:-8888}"
-INTERNAL_PORT="${INTERNAL_PORT:-80}"
+INTERNAL_PORT="${INTERNAL_PORT:-8888}"
+NGINX_SERVER_NAME="${NGINX_SERVER_NAME:-localhost}"
 
 echo "开始部署 $CONTAINER_NAME..."
 
@@ -39,7 +40,7 @@ docker run -d \
     --name $CONTAINER_NAME \
     -p $EXTERNAL_PORT:$INTERNAL_PORT \
     -e PORT=$INTERNAL_PORT \
-    -e NGINX_SERVER_NAME=${NGINX_SERVER_NAME:-localhost} \
+    -e NGINX_SERVER_NAME="$NGINX_SERVER_NAME" \
     --restart unless-stopped \
     $IMAGE_NAME
 
@@ -52,7 +53,7 @@ if docker ps | grep -q $CONTAINER_NAME; then
     echo "✅ 容器启动成功!"
     echo "容器信息:"
     docker ps | grep $CONTAINER_NAME
-    echo "访问地址: http://localhost:$EXTERNAL_PORT"
+    echo "访问地址: http://$NGINX_SERVER_NAME:$EXTERNAL_PORT"
 else
     echo "❌ 容器启动失败!"
     echo "容器日志:"

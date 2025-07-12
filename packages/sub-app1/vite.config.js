@@ -24,7 +24,7 @@ export default defineConfig({
       '@myqiankun/utils': fileURLToPath(new URL('../../shared/utils/src/index.ts', import.meta.url))
     },
   },
-   server: {
+  server: {
     port: 8001,
     host: 'localhost',
     cors: true,// 作为子应用，需要配置跨域
@@ -37,4 +37,17 @@ export default defineConfig({
       }
     }
   },
+  build: {
+    rollupOptions: {
+      external: ['@myqiankun/utils'],
+      output: {
+        globals: {
+          '@myqiankun/utils': 'MyQiankunUtils'
+        }
+      }
+    }
+  },
+  define: {
+    'process.env.NODE_ENV': '"production"'
+  }
 })

@@ -26,7 +26,7 @@ COPY . .
 RUN cd shared/utils && pnpm build
 
 # 构建所有应用
-RUN pnpm build
+RUN pnpm build:apps
 
 # 运行阶段
 FROM nginx:alpine
@@ -41,6 +41,7 @@ COPY nginx.conf /etc/nginx/templates/default.conf.template
 COPY --from=builder /app/packages/main-app/dist /usr/share/nginx/html
 COPY --from=builder /app/packages/sub-app1/dist /usr/share/nginx/html/sub-app1
 COPY --from=builder /app/packages/sub-app2/dist /usr/share/nginx/html/sub-app2
+COPY --from=builder /app/shared/utils/dist /usr/share/nginx/html/shared/utils
 
 # 设置默认环境变量
 ENV PORT=8888

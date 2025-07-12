@@ -27,8 +27,8 @@ RUN pnpm build
 # 运行阶段
 FROM nginx:alpine
 
-# 安装 envsubst
-RUN apk add --no-cache gettext
+# 安装 envsubst 和 curl (用于健康检查)
+RUN apk add --no-cache gettext curl
 
 # 复制 nginx 配置模板
 COPY nginx.conf /etc/nginx/templates/default.conf.template
@@ -45,6 +45,10 @@ ENV NGINX_SERVER_NAME=localhost
 # 启动脚本
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:${PORT:-80}/ || exit 1
 
 EXPOSE 80
 

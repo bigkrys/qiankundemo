@@ -7,14 +7,16 @@ const mode = process.env.NODE_ENV || 'development';
 const useDevMode = mode === 'development';
 const host = '127.0.0.1';
 const port = 8002;
-const subAppName = 'sub-app2'; // 修改为与目录名一致
+const subAppName = 'subApp2'; // 修改为与主应用配置一致
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: useDevMode ? `http://${host}:${port}/` : '/',
   plugins: [
     react(),
-    qiankun(subAppName, { useDevMode })
+    qiankun(subAppName, { 
+      useDevMode
+    })
   ],
   resolve: {
     alias: {

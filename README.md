@@ -21,15 +21,14 @@ cd packages/main-app && npm run dev
 
 ##容器化部署
 ```bash
-tar -czf qiankun-deploy.tar.gz \
-    Dockerfile \
-    docker-compose.yml \
-    nginx.conf \
-    package.json \
-    package-lock.json \
-    lerna.json \
-    packages/main-app \
-    packages/subApp1 \
-    packages/subApp2 \
-    shared/utils
+已配置容器化部署，需在仓库配置如下secret
+DOCKER_USERNAME： docker hub的用户名
+DOCKER_PASSWORD： docker hub的密码
+DOCKER_IMAGE_NAME： docker hub的镜像名
+SSH_HOST：服务器SSh的用户名
+SSH_USER：服务器SSh的用户名
+SSH_PRIVATE_KEY：服务器SSh的私钥
+NGINX_SERVER_NAME： nginx的server_name
+PORT： nginx的端口
 ```
+

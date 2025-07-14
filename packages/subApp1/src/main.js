@@ -1,3 +1,4 @@
+import './public-path'
 import './assets/main.css'
 
 import { createApp } from 'vue'
@@ -18,7 +19,7 @@ const render = (props = {}) => {
   console.log('initialQuery', initialQuery);
   console.log('userInfo', userInfo);
   // 挂载到 qiankun 容器或默认 #app
-  appInstance.mount(container ? container.querySelector('#app') : '#app');
+  appInstance.mount(container ? container.querySelector('#subApp1') : '#subApp1');
 };
 
 /** Qiankun 生命周期钩子 */

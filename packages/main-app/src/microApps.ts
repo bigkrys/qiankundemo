@@ -1,13 +1,15 @@
+const isDev = import.meta.env.MODE === 'development';
+
 export const microApps = [
     {
       name: 'subApp1', // app name registered
-      entry: '//localhost:8001',
+      entry: isDev ? `//${location.hostname}:8001/` : '/subApp1/',
       container: '#subAppContainer',
       activeRule: '/subApp1',
     },
     {
       name: 'subApp2',
-      entry: '//localhost:8002', // 修正为字符串格式
+      entry: isDev ? `//${location.hostname}:8002/${import.meta.env.VITE_SUB_APP_NAME}/` : '/subApp2/',
       container: '#subAppContainer',
       activeRule: '/subApp2',
     },

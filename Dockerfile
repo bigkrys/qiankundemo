@@ -11,42 +11,51 @@ COPY package*.json ./
 COPY pnpm-workspace.yaml ./
 COPY lerna.json ./
 COPY packages/main-app/package*.json ./packages/main-app/
-COPY packages/sub-app1/package*.json ./packages/sub-app1/
-COPY packages/sub-app2/package*.json ./packages/sub-app2/
+COPY packages/subApp1/package*.json ./packages/subApp1/
+COPY packages/subApp2/package*.json ./packages/subApp2/
 COPY shared/utils/package*.json ./shared/utils/
 
 # 安装依赖
 RUN pnpm install
 RUN pnpm add -w typescript
+
 # 复制源代码
 COPY . .
 
-# 构建应用
-RUN pnpm build
+# 先构建共享库
+RUN cd shared/utils && pnpm build
+
+# 构建所有应用
+RUN pnpm build:apps
 
 # 运行阶段
 FROM nginx:alpine
 
-# 安装 envsubst
-RUN apk add --no-cache gettext
+# 安装 envsubst 和 curl (用于健康检查)
+RUN apk add --no-cache gettext curl
 
 # 复制 nginx 配置模板
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 
 # 复制构建产物
 COPY --from=builder /app/packages/main-app/dist /usr/share/nginx/html
-COPY --from=builder /app/packages/sub-app1/dist /usr/share/nginx/html/sub-app1
-COPY --from=builder /app/packages/sub-app2/dist /usr/share/nginx/html/sub-app2
+COPY --from=builder /app/packages/subApp1/dist /usr/share/nginx/html/subApp1
+COPY --from=builder /app/packages/subApp2/dist /usr/share/nginx/html/subApp2
+COPY --from=builder /app/shared/utils/dist /usr/share/nginx/html/shared/utils
 
 # 设置默认环境变量
-ENV PORT=80
+ENV PORT=8888
 ENV NGINX_SERVER_NAME=localhost
 
 # 启动脚本
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 
-EXPOSE 80
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:${PORT:-8888}/ || exit 1
+
+EXPOSE 8888
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"] 

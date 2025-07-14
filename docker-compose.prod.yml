@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  qiankun-app:
+    container_name: qiankun
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./ssl:/etc/nginx/ssl
+    environment:
+      - PORT=8888
+      - NGINX_SERVER_NAME=${NGINX_SERVER_NAME}
+    restart: unless-stopped
+    networks:
+      - qiankun-network
+
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-subdomain.conf:/etc/nginx/conf.d/default.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - qiankun-app
+    restart: unless-stopped
+    networks:
+      - qiankun-network
+
+networks:
+  qiankun-network:
+    driver: bridge 

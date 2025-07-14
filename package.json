@@ -6,8 +6,12 @@
     "shared/*"
   ],
   "scripts": {
-    "build": "lerna run build",
-    "start": "lerna run start --parallel"
+    "build:utils": "cd shared/utils && pnpm build",
+    "build:apps": "lerna run build --ignore=@myqiankun/utils",
+    "build": "pnpm build:utils && pnpm build:apps",
+    "start": "lerna run start --parallel",
+    "dev": "lerna run dev --parallel",
+    "clean": "lerna clean && rm -rf shared/utils/dist"
   },
   "dependencies": {},
   "devDependencies": {

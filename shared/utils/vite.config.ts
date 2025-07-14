@@ -6,7 +6,8 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'MyQiankunUtils',
-      fileName: 'index'
+      fileName: (format) => `index.${format}.js`,
+      formats: ['es', 'umd']
     },
     rollupOptions: {
       external: ['react', 'react-dom'],
@@ -17,5 +18,8 @@ export default defineConfig({
         }
       }
     }
+  },
+  define: {
+    'process.env.NODE_ENV': '"production"'
   }
 }); 

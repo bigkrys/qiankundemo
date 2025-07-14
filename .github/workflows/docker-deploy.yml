@@ -83,7 +83,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-
             # 设置环境变量
             export DOCKER_IMAGE_NAME="${{ secrets.DOCKER_IMAGE_NAME }}"
             export NGINX_SERVER_NAME="${{ secrets.NGINX_SERVER_NAME }}"
@@ -145,4 +144,3 @@ jobs:
                 sleep 3
               fi
             done
-

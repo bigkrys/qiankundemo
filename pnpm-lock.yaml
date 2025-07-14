@@ -18,7 +18,7 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0(react-dom@18.3.1)(react@18.3.1)
       '@myqiankun/utils':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../../shared/utils
       antd:
         specifier: ^5.15.2
@@ -70,7 +70,7 @@ importers:
         specifier: ^1.0.15
         version: 1.0.15(typescript@5.8.3)(vite@5.4.19)
 
-  packages/sub-app1:
+  packages/subApp1:
     dependencies:
       '@myqiankun/utils':
         specifier: '*'
@@ -92,10 +92,10 @@ importers:
         specifier: ^1.0.15
         version: 1.0.15(typescript@5.8.3)(vite@5.4.19)
 
-  packages/sub-app2:
+  packages/subApp2:
     dependencies:
       '@myqiankun/utils':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../../shared/utils
       react:
         specifier: ^18.2.0

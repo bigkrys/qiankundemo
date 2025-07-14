@@ -36,6 +36,20 @@ jobs:
           echo "PORT=${{ secrets.PORT }}" >> .env
           echo "NODE_ENV=production" >> .env
 
+        -name: Create .env file for subApp1
+        run: |
+          cd packages/subApp1
+          echo "BASE_URL=/subApp1" >> .env
+          echo "NODE_ENV=production" >> .env
+          cd ../..
+
+        -name: Create .env file for subApp2
+        run: |
+          cd packages/subApp2
+          echo "BASE_URL=/subApp2" >> .env
+          echo "NODE_ENV=production" >> .env
+          cd ../..
+
       - name: Build shared utils
         run: |
           cd shared/utils

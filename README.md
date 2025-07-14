@@ -29,7 +29,7 @@ tar -czf qiankun-deploy.tar.gz \
     package-lock.json \
     lerna.json \
     packages/main-app \
-    packages/sub-app1 \
-    packages/sub-app2 \
+    packages/subApp1 \
+    packages/subApp2 \
     shared/utils
 ```
